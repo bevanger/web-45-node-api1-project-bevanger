@@ -1,6 +1,7 @@
 // BUILD YOUR SERVER HERE
 //Imports
 const express = require('express');
+const User = require('./users/model.js');
 //instance of express app
 const server = express();
 //global middleware
@@ -12,7 +13,14 @@ server.post('/api/users', (req, res) => {
 });
 //[GET] returns array of users
 server.get('/api/users', (req, res) => {
-    res.json('returns array of users')
+    User.find()
+        .then(users => {
+            res.status(200).json(users)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json( { message: err.message })
+        })
 });
 //[GET] returns user object with id 
 server.get('/api/users/:id', (req, res) => {
